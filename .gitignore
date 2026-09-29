@@ -1,0 +1,70 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+aquaclean-venv/
+yolo-venv/
+
+# Secrets / environment files
+.env
+.env.*
+*.pem
+*.key
+
+# Logs / temporary files
+logs/
+*.log
+tmp/
+temp/
+backups/
+
+# Testing / caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# YOLO / training outputs
+runs/
+new_data/
+
+# Experimental / temporary model data
+best/
+yolo26n.pt
+
+# Dataset images and labels
+dataset/images/
+dataset/labels/
+
+# Old dataset backups
+dataset_backup_before_new_data/
+
+# Friend / temporary collected data
+friend_data/
+
+# Preview / generated images
+*_preview.jpg
+dataset_preview.jpg
+missing_labels_preview.jpg
+
+# Experimental model files
+models/*.pt
+!models/best.pt
+
+# Node / web dependencies
+node_modules/
+dist/
+build/
+
+# Vision test frames
+vision/test_frames/
