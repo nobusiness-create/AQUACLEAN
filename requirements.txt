@@ -1,0 +1,12 @@
+numpy
+opencv-contrib-python
+ultralytics
+torch
+torchvision
+Flask
+Flask-SocketIO
+simple-websocket
+gpiozero
+smbus2
+adafruit-lgpio
+pytest
