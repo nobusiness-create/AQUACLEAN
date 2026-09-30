@@ -1,120 +1,247 @@
 # AQUA-CLEAN
 
-AQUA-CLEAN is an autonomous aquatic waste collection and intelligent segregation prototype designed for operation in water bodies. The system combines computer vision, autonomous navigation, proximity safety, waste collection, and a web-based monitoring interface.
+### Autonomous Aquatic Waste Collection & Intelligent Segregation System
 
-## System Overview
+AQUA-CLEAN is a floating robotic system designed to detect and collect floating waste from water bodies using computer vision, autonomous navigation, and a conveyor-based collection mechanism.
+
+The system is built around a **Raspberry Pi 5** and a floating catamaran-style platform.
+
+---
+
+## System Workflow
 
 ```text
 Camera
-  ↓
+   ↓
 YOLO Waste Detection
-  ↓
+   ↓
 Target Selection
-  ↓
+   ↓
 Navigation
-  ↓
-Motor Control
-  ↓
+   ↓
 Waste Collection
-  ↓
-Return / Dock
+   ↓
+Return / Docking
+   ↓
+Unloading
+   ↓
+Segregation & Monitoring
 ```
 
-The Raspberry Pi 5 acts as the main controller. A forward-facing Rapoo USB camera provides the vision input, while ultrasonic sensors and a capacity sensor support safety and collection monitoring.
+---
 
 ## Key Features
 
-- YOLO-based waste detection
-- Multi-target detection and sequential target selection
-- Live camera streaming
-- Three-motor propulsion control
+- YOLO-based floating waste detection
+- Sequential multi-target selection
+- Autonomous navigation
+- Three-motor propulsion
 - Conveyor-based waste collection
 - Dual ultrasonic proximity safety
-- IR-based collection-bin capacity monitoring
+- IR-based collection-bin monitoring
 - Raspberry Pi 5 integration
-- Read-only live monitoring dashboard
+- Live camera monitoring
+- Modular control architecture
+
+---
 
 ## Hardware
 
 - Raspberry Pi 5
-- Rapoo USB webcam
-- 3 propulsion DC motors
-- 1 conveyor motor
+- Rapoo C200 USB Camera
+- 3 × DC propulsion motors
+- 1 × conveyor motor
 - 2 × L298N motor drivers
-- 2 ultrasonic sensors
+- 2 × ultrasonic sensors
 - IR capacity sensor
-- MPU6050
+- MPU6050 IMU
 - 12 V battery
 - Floating catamaran-style chassis
+
+---
 
 ## Software
 
 - Python
 - OpenCV
 - Ultralytics YOLO
+- PyTorch
+- NumPy
 - Flask / Flask-SocketIO
 - gpiozero
-- NumPy
-- PyTorch
+- smbus2
+- pytest
+
+Python dependencies are listed in [`requirements.txt`](requirements.txt).
+
+---
+
+## AI-Based Waste Detection
+
+A custom YOLO model is used to detect floating waste.
+
+### Detection Classes
+
+| Class ID | Class |
+|---:|---|
+| 0 | waste |
+
+The currently deployed model is:
+
+```text
+models/best.pt
+```
+
+### Baseline Model Results
+
+| Metric | Validation | Held-out Test |
+|---|---:|---:|
+| Precision | 0.802 | 0.708 |
+| Recall | 0.758 | 0.576 |
+| mAP@50 | 0.816 | 0.723 |
+| mAP@50-95 | 0.484 | 0.297 |
+
+The model will be updated as the AQUA-CLEAN dataset is expanded with more real-water images.
+
+---
+
+## Architecture
+
+```text
+Camera
+  ↓
+Vision / YOLO
+  ↓
+Target Selection
+  ↓
+Navigation
+  ↓
+Safety Layer
+  ↓
+Motor Control
+  ↓
+L298N
+  ↓
+Propulsion / Conveyor
+```
+
+Sensors provide additional safety and system-state information to the control layer.
+
+---
 
 ## Repository Structure
 
 ```text
-aquaclean/
-├── main.py
-├── config.py
-├── camera.py
-├── detector.py
-├── navigation.py
-├── motors.py
-├── conveyor.py
-├── ultrasonic.py
-├── capacity.py
-├── safety.py
-├── mission.py
-├── dashboard.py
-├── remote.py
-├── templates/
-├── static/
-├── tests/
+AQUACLEAN/
+├── README.md
+├── requirements.txt
+├── .gitignore
 ├── models/
-└── dataset/
+│   └── best.pt
+├── dataset/
+│   └── data.yaml
+├── navigation/
+├── vision/
+├── docs/
+│   └── images/
+└── media/
+    ├── images/
+    └── videos/
 ```
 
-## Running on Raspberry Pi
+Large datasets, training runs, backups, and temporary files are kept outside the public repository.
 
-Create and activate the virtual environment:
+---
+
+## Installation
 
 ```bash
+git clone https://github.com/nobusiness-create/AQUACLEAN.git
+cd AQUACLEAN
+
 python3 -m venv ~/aquaclean-venv
 source ~/aquaclean-venv/bin/activate
-cd ~/aquaclean
+
+pip install -r requirements.txt
 ```
 
-Run in commissioning/manual-only mode:
+Raspberry Pi deployments may require platform-specific installation of PyTorch and GPIO-related packages.
+
+---
+
+## Running
 
 ```bash
+cd ~/aquaclean
+source ~/aquaclean-venv/bin/activate
 python main.py --no-autonomous
 ```
 
-The monitoring interface is served by the Raspberry Pi.
+Autonomous operation should only be enabled after the required hardware and safety checks have been completed.
 
-## YOLO Model
+---
 
-The project currently uses a single detection class:
+## Media
+
+Project photographs and demonstration videos are organized in:
 
 ```text
-0 = waste
+media/
+├── images/
+└── videos/
 ```
 
-The model is trained using a custom dataset and can be retrained as additional real-pool images are collected.
+More photographs and water-testing demonstrations will be added as the prototype develops.
 
-Keep new datasets versioned separately and evaluate a new model before replacing the deployed model.
+---
 
 ## Development Status
 
-The project is a functional prototype undergoing hardware commissioning, real-pool validation, and iterative YOLO dataset expansion.
+**Current stage:** Active Prototype Development
 
-## Safety
+Current development focuses on:
 
-Motor power and Raspberry Pi power should be separated appropriately, sensor logic levels must be verified before connection, and autonomous operation should only be enabled after individual hardware and safety tests have passed.
+- Real-water validation
+- Propulsion and conveyor integration
+- Improved YOLO dataset
+- Model refinement
+- Navigation refinement
+- Docking and unloading
+- Intelligent waste segregation
+
+---
+
+## Future Direction
+
+AQUA-CLEAN is being developed toward a more robust autonomous platform capable of:
+
+```text
+DETECT
+  ↓
+LOCALIZE
+  ↓
+APPROACH
+  ↓
+COLLECT
+  ↓
+RETURN
+  ↓
+UNLOAD
+  ↓
+SEGREGATE
+  ↓
+MONITOR
+```
+
+---
+
+## Project
+
+**AQUA-CLEAN**  
+Autonomous Aquatic Waste Collection & Intelligent Segregation System
+
+**Platform:** Raspberry Pi 5  
+**Vision:** Custom YOLO Waste Detection  
+**Collection:** Conveyor-Based  
+**Propulsion:** Three-Motor System  
+**Status:** Active Prototype Development
