@@ -67,10 +67,7 @@ Segregation & Monitoring
 - Ultralytics YOLO
 - PyTorch
 - NumPy
-- Flask / Flask-SocketIO
-- gpiozero
-- smbus2
-- pytest
+- Flask 
 
 Python dependencies are listed in [`requirements.txt`](requirements.txt).
 
